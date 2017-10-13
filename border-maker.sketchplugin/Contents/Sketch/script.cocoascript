@@ -28,6 +28,8 @@ var onMakeBorders = function(context) {
     if (borders.left == null) {
         makePart(1, 0, style, borderColor);
     }
+
+    context.document.reloadInspector();
 };
 
 var onUpdateColors = function(context) {
@@ -56,6 +58,8 @@ var onUpdateColors = function(context) {
             borders.left.setColor(borderColor);
         }
     }
+
+    context.document.reloadInspector();
 }
 
 function getStyle(context) {
