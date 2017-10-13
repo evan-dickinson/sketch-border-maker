@@ -116,8 +116,12 @@ function makePart(x, y, style, borderColor) {
 function firstActiveInnerShadow(shadows) {
     // First item in the UI is last in the array
     for (var idx = shadows.length - 1; idx >= 0; idx--) {
-    //for (var idx = 0; idx < shadows.length; idx++) {
         var currShadow = shadows[idx];
+
+        if (currShadow.blurRadius() != 0.0 || currShadow.spread() != 0.0) {
+            continue;
+        }
+
         if (currShadow.isEnabled()) {
             return currShadow;
         }
