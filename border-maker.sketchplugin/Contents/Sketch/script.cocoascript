@@ -3,13 +3,19 @@ var onMakeBorders = function(context) {
     if (style === null) {
         return;
     }
-    var shadows = [style innerShadows];
 
+    var regularBorderColor;
+    regularBorderColor = disableRegularBorders(style);
+
+    var shadows = [style innerShadows];
     var borders = findBorders(shadows);
 
     var firstShadow = firstActiveInnerShadow(shadows);
     var borderColor;
-    if (firstShadow != null) {
+    if (regularBorderColor != null) {
+        borderColor = regularBorderColor;
+    }
+    else if (firstShadow != null) {
         borderColor = [firstShadow color];
     }
     else {
@@ -78,6 +84,24 @@ function getStyle(context) {
 
     return style;
 }
+
+// Turn off any items in the "borders" section
+function disableRegularBorders(style) {
+    var borders = style.enabledBorders();
+    var firstBorderColor;
+
+    for (var idx = 0; idx < borders.length; idx++) {
+        var currBorder = borders[idx];
+        [currBorder setIsEnabled: false];
+
+        if (firstBorderColor == null) {
+            firstBorderColor = [currBorder color];
+        }
+    }
+
+    return firstBorderColor;
+}
+
 
 function findBorders(shadows) {
     var borders = {};
