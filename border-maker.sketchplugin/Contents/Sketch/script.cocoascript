@@ -1,7 +1,8 @@
 var onMakeBorders = function(context) {
-    var selection = context.selection;
-    var item = selection[0];
-    var style = [item style];
+    var style = getStyle(context);
+    if (style === null) {
+        return;
+    }
     var shadows = [style innerShadows];
 
     var borders = findBorders(shadows);
@@ -30,9 +31,10 @@ var onMakeBorders = function(context) {
 };
 
 var onUpdateColors = function(context) {
-    var selection = context.selection;
-    var item = selection[0];
-    var style = [item style];
+    var style = getStyle(context);
+    if (style === null) {
+        return;
+    }
     var shadows = [style innerShadows];
 
     var firstShadow = firstActiveInnerShadow(shadows);
@@ -56,6 +58,19 @@ var onUpdateColors = function(context) {
     }
 }
 
+function getStyle(context) {
+    var selection = context.selection;
+    if (selection.length != 1) {
+        var doc = context.document;
+        [doc showMessage: "Select one object"];
+        return null;
+    }
+
+    var item = selection[0];
+    var style = [item style];
+
+    return style;
+}
 
 function findBorders(shadows) {
     var borders = {};
