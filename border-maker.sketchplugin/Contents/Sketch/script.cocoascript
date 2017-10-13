@@ -16,17 +16,20 @@ var onMakeBorders = function(context) {
         borderColor = [MSColor rgbColorRed: 128 green: 128 blue: 128];
     }
 
-    if (borders.top == null) {
-        makePart(0, 1, style, borderColor);
-    }
-    if (borders.right == null) {
-        makePart(-1, 0, style, borderColor);
+    // Create borders in the reverse order that we
+    // want them to appear in the inspector. The
+    // first one we create goes at the bottom of the list.
+    if (borders.left == null) {
+        makePart(1, 0, style, borderColor);
     }
     if (borders.bottom == null) {
         makePart(0, -1, style, borderColor);
     }
-    if (borders.left == null) {
-        makePart(1, 0, style, borderColor);
+    if (borders.right == null) {
+        makePart(-1, 0, style, borderColor);
+    }
+    if (borders.top == null) {
+        makePart(0, 1, style, borderColor);
     }
 
     context.document.reloadInspector();
