@@ -1,0 +1,30 @@
+          var onRun = function(context) {
+          var selection = context.selection;
+var item = selection[0];
+var style = [item style];
+var shadows = [style innerShadows];
+
+var top, right, bottom, left;
+for (var idx = 0; idx < shadows.length; idx++) {
+    var currShadow = shadows[idx];
+    if (currShadow.blurRadius() != 0.0 || currShadow.spread() != 0.0) {
+            continue;
+    }
+
+    if (currShadow.offsetX() == 0.0 && currShadow.offsetY() == 1.0) {
+        top = currShadow;
+    }
+}
+
+if (top != null) {
+    bottom = style.addStylePartOfType(3); // 3 = inner shadow
+    [bottom setSpread: 0];
+    [bottom setBlurRadius: 0];
+    [bottom setOffsetX: 0];
+    [bottom setOffsetY: -1];
+    [bottom setColor: [top color]];
+}
+
+
+          };
+          
