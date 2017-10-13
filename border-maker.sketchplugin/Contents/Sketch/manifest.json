@@ -3,17 +3,27 @@
   "commands" : [
     {
       "script" : "script.cocoascript",
-      "name" : "border-maker",
+      "name" : "Make borders",
       "handlers" : {
-        "run" : "onRun"
+        "run" : "onMakeBorders"
       },
       "identifier" : "com.bohemiancoding.sketch.runscriptidentifier"
-    }
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "Update border colour",
+      "handlers" : {
+        "run" : "onUpdateColors"
+      },
+      "identifier" : "com.bohemiancoding.sketch.runscriptidentifier2"
+    },
+
   ],
   "menu" : {
-    "title" : "border-maker",
+    "title" : "Border Maker",
     "items" : [
-      "com.bohemiancoding.sketch.runscriptidentifier"
+      "com.bohemiancoding.sketch.runscriptidentifier",
+      "com.bohemiancoding.sketch.runscriptidentifier2"
     ]
   },
   "identifier" : "com.example.sketch.b7e8b565-8bb0-4c03-b9f2-617d041adc9f",

@@ -1,33 +1,13 @@
-var onRun = function(context) {
+var onMakeBorders = function(context) {
     var selection = context.selection;
     var item = selection[0];
     var style = [item style];
     var shadows = [style innerShadows];
 
-    var top, right, bottom, left;
-    for (var idx = 0; idx < shadows.length; idx++) {
-        var currShadow = shadows[idx];
-        if (currShadow.blurRadius() != 0.0 || currShadow.spread() != 0.0) {
-            continue;
-        }
-
-        if (currShadow.offsetX() == 0.0 && currShadow.offsetY() == 1.0) {
-            top = currShadow;
-        }
-        if (currShadow.offsetX() == -1.0 && currShadow.offsetY() == 0.0) {
-            right = currShadow;
-        }
-        if (currShadow.offsetX() == 0.0 && currShadow.offsetY() == -1.0) {
-            bottom = currShadow;
-        }
-        if (currShadow.offsetX() == 1.0 && currShadow.offsetY() == 0.0) {
-            left = currShadow;
-        }
-    }
+    var borders = findBorders(shadows);
 
     var firstShadow = firstActiveInnerShadow(shadows);
     var borderColor;
-
     if (firstShadow != null) {
         borderColor = [firstShadow color];
     }
@@ -35,19 +15,72 @@ var onRun = function(context) {
         borderColor = [MSColor rgbColorRed: 128 green: 128 blue: 128];
     }
 
-    if (top == null) {
-        top = makePart(0, 1, style, borderColor);
+    if (borders.top == null) {
+        makePart(0, 1, style, borderColor);
     }
-    if (right == null) {
-        right = makePart(-1, 0, style, borderColor);
+    if (borders.right == null) {
+        makePart(-1, 0, style, borderColor);
     }
-    if (bottom == null) {
-        bottom = makePart(0, -1, style, borderColor);
+    if (borders.bottom == null) {
+        makePart(0, -1, style, borderColor);
     }
-    if (left == null) {
-        left = makePart(1, 0, style, borderColor);
+    if (borders.left == null) {
+        makePart(1, 0, style, borderColor);
     }
 };
+
+var onUpdateColors = function(context) {
+    var selection = context.selection;
+    var item = selection[0];
+    var style = [item style];
+    var shadows = [style innerShadows];
+
+    var firstShadow = firstActiveInnerShadow(shadows);
+
+    if (firstShadow != null) {
+        borderColor = [firstShadow color];
+        var borders = findBorders(shadows);
+
+        if (borders.top != null) {
+            borders.top.setColor(borderColor)
+        }
+        if (borders.right != null) {
+            borders.right.setColor(borderColor);
+        }
+        if (borders.bottom != null) {
+            borders.bottom.setColor(borderColor);
+        }
+        if (borders.left != null) {
+            borders.left.setColor(borderColor);
+        }
+    }
+}
+
+
+function findBorders(shadows) {
+    var borders = {};
+    for (var idx = 0; idx < shadows.length; idx++) {
+        var currShadow = shadows[idx];
+
+        if (currShadow.blurRadius() != 0.0 || currShadow.spread() != 0.0) {
+            continue;
+        }
+
+        if (currShadow.offsetX() == 0.0 && currShadow.offsetY() == 1.0) {
+            borders.top = currShadow;
+        }
+        if (currShadow.offsetX() == -1.0 && currShadow.offsetY() == 0.0) {
+            borders.right = currShadow;
+        }
+        if (currShadow.offsetX() == 0.0 && currShadow.offsetY() == -1.0) {
+            borders.bottom = currShadow;
+        }
+        if (currShadow.offsetX() == 1.0 && currShadow.offsetY() == 0.0) {
+            borders.left = currShadow;
+        }
+    }
+    return borders;
+}
 
 function makePart(x, y, style, borderColor) {
     var newPart = style.addStylePartOfType(3); // 3 = inner shadow
@@ -59,7 +92,9 @@ function makePart(x, y, style, borderColor) {
 }
 
 function firstActiveInnerShadow(shadows) {
-    for (var idx = 0; idx < shadows.length; idx++) {
+    // First item in the UI is last in the array
+    for (var idx = shadows.length - 1; idx >= 0; idx--) {
+    //for (var idx = 0; idx < shadows.length; idx++) {
         var currShadow = shadows[idx];
         if (currShadow.isEnabled()) {
             return currShadow;
