@@ -70,9 +70,15 @@ var onUpdateColors = function(context) {
         if (borders.left != null) {
             borders.left.setColor(borderColor);
         }
+
+        context.document.reloadInspector();
+    }
+    else {
+        var doc = context.document;
+        [doc showMessage: "Selected object doesn't have any inner shadow borders."];
     }
 
-    context.document.reloadInspector();
+    
 }
 
 function getStyle(context) {
