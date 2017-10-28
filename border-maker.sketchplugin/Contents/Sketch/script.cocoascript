@@ -83,15 +83,22 @@ var onUpdateColors = function(context) {
 
 function getStyle(context) {
     var selection = context.selection;
+    var doc = context.document;
     if (selection.length != 1) {
-        var doc = context.document;
         [doc showMessage: "Select one object"];
         return null;
     }
 
     var item = selection[0];
-    var style = [item style];
 
+    // isKindOfClass will return true for classes that inherit from the target.
+    // isMemberOfClass will not.
+    if (![item isKindOfClass:[MSShapeGroup class]]) {
+        [doc showMessage: "Selected object must be a shape"];
+        return null;
+    }
+
+    var style = [item style];
     return style;
 }
 
