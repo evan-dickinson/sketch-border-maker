@@ -1,0 +1,26 @@
+{
+  "compatibleVersion": 3,
+  "bundleVersion": 1,
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "Make Borders",
+      "identifier": "make-borders",
+      "handler": "onMakeBorders",
+      "script": "./my-command.js"
+    },
+    {
+      "name": "Update Border Colors",
+      "identifier": "update-colors",
+      "handler": "onUpdateColors",
+      "script": "./my-command.js"
+    }    
+  ],
+  "menu": {
+    "title": "Border Maker",
+    "items": [
+      "make-borders",
+      "update-colors"
+    ]
+  }
+}
